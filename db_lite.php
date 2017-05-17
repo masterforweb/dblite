@@ -21,9 +21,6 @@
 		}	
 		else {
 			
-			if ($db == '')
-				$db = $name;
-
 			$config[$name] = ['user' => $user, 'pwd' => $pwd, 'connect' => $connect];
 			
 			return True;
