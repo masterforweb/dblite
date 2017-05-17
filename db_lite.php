@@ -3,12 +3,12 @@
 	/**
 	* хранитель конфигураций
 	*/
-	function db_config($name = '', $user = '', $pwd = '', $host = 'localhost', $db = '', $port = 3306) {
+	function db_config($name = '', $connect = '', $user = 'root', $pwd = '') {
 		
 		static $config = array();
 
 		
-		if ($user == '' and $pwd == ''){
+		if ($connect == ''){
 			if (count($config) > 0) {
 				if ($name == '') {
 					return current($config);
@@ -24,7 +24,8 @@
 			if ($db == '')
 				$db = $name;
 
-			$config[$name] = ['user' => $user, 'pwd' => $pwd, 'host' => $host, 'db' => $db, 'port' => $port];
+			$config[$name] = ['user' => $user, 'pwd' => $pwd, 'connect' => $connect];
+			
 			return True;
 		}
 
@@ -50,9 +51,11 @@
 		if (is_array($config = db_config($name))) {
 
 			
-			$mysql =  new mysqli($config['host'], $config['user'], $config['pwd'], $config['db']);
-			$mysql->query('SET NAMES UTF8');
+			$mysql = new PDO($config['connect'], $config['user'], $config['pwd']);
+			//$mysql =  new mysqli($config['host'], $config['user'], $config['pwd'], $config['db']);
+			//$mysql->query('SET NAMES UTF8');
 
+			$mysql->query("SET NAMES 'utf8'");
 			return $mysql;
 
 			//return $connects[$name] = $mysql;
@@ -72,12 +75,13 @@
 
 		$conn = db_conn($conf);
 
-		$result = $conn->query($query);
+		$result = $conn->prepare($query);
+		$result->execute();
 		
     	if (strripos($query, 'INSERT INTO') === 0)
-        	return $conn->insert_id;
+        	return $result->lastInsertId();
         else
-        	return $result;
+        	return $result->fetchAll();;
 
 	}	
 
@@ -90,16 +94,7 @@
 
 		$result = db_query($query, $conf);
 
-		if ($result !== False) {
-		 	while ($row = $result->fetch_assoc())
-            	$result_array[] = $row;
-
-            return $result_array;
-		}
-		else
-			return False;
-
-        
+		return $result;
 
 	}
 

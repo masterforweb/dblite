@@ -1,0 +1,20 @@
+{
+    "name": "masterforweb/db_lite",
+    "description": "lite pdo sql",
+    "homepage": "https://github.com/masterforweb/dblite",
+    "keywords": ["microframework","rest","router","php quick start"],
+    "type": "library",
+    "license": "MIT",
+	"authors": [
+		{
+	    "name": "AK Delfin",
+            "email": "masterforweb@hotmail.com"
+    	}
+	],
+	"require": {
+		"php": ">=5.2"
+	},
+    "autoload": {
+        "files": ["db_lite.php"]
+    }
+}
