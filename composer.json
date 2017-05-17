@@ -1,7 +1,7 @@
 {
     "name": "masterforweb/db_lite",
     "description": "lite pdo sql",
-    "homepage": "https://github.com/masterforweb/dblite",
+    "homepage": "https://github.com/masterforweb/db_lite",
     "keywords": ["microframework","rest","router","php quick start"],
     "type": "library",
     "license": "MIT",
