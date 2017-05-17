@@ -50,7 +50,7 @@
 
 		if (is_array($config = db_config($name))) {
 
-			
+
 			$mysql = new PDO($config['connect'], $config['user'], $config['pwd']);
 			//$mysql =  new mysqli($config['host'], $config['user'], $config['pwd'], $config['db']);
 			//$mysql->query('SET NAMES UTF8');
