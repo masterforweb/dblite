@@ -3,7 +3,6 @@
     "description": "lite pdo sql",
     "homepage": "https://github.com/masterforweb/db_lite",
     "keywords": ["microframework","rest","router","php quick start"],
-    "version": "0.2",		
     "type": "library",
     "license": "MIT",
 	"authors": [
