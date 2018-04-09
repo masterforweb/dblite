@@ -91,8 +91,11 @@
 
 		$result = db_query($query, $conf);
 
-		return $result;
-
+		if (sizeof($result) > 1)
+			return $result;
+		else
+			return $result[0];
+		
 	}
 
 
