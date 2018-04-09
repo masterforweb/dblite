@@ -88,13 +88,13 @@
 	* возвращатель результатов
 	*/
 	function db_get($query, $conf = '') {
-
+	
 		$result = db_query($query, $conf);
 
 		if (sizeof($result) == 1)
-			return $result;
-		else
 			return $result[0];
+		else
+			return $result;
 		
 	}
 
