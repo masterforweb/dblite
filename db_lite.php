@@ -115,7 +115,7 @@
           		
             	if (isset($values))
             		$values .= ',';
-          		$values .= '"'.$item.'"';
+          		$values .= '"'.addslashes($item).'"';
         	
         	}  
 
