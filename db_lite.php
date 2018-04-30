@@ -68,17 +68,29 @@
 	/**
 	* исполнитель запросов
 	*/
-	function db_query($query, $conf = ''){
+	function db_query($query, $data = array(), $conf = ''){
 
 		$conn = db_conn($conf);
 
 		$result = $conn->prepare($query);
-		$result->execute();
 		
-    	if (strripos($query, 'INSERT INTO') === 0)
-        	return $result->lastInsertId();
-        else
-        	return $result->fetchAll();;
+		if (is_array($data)){
+			$res = $result->execute($data);
+		}
+		else
+			$res = $result->execute();
+
+		if (!$res) {
+			return $result->errorInfo();
+		}
+		else {
+		
+    		if (strripos($query, 'INSERT INTO') === 0) {
+        		return $conn->lastInsertId();
+    		}
+        	else
+        		return $result->fetchAll();
+        }	
 
 	}	
 
@@ -89,7 +101,7 @@
 	*/
 	function db_get($query, $conf = '') {
 	
-		$result = db_query($query, $conf);
+		$result = db_query($query, null, $conf);
 
 		if (sizeof($result) == 1)
 			return $result[0];
@@ -109,8 +121,16 @@
 
         	if ($item !== '') {
             	
-            	if (isset($columns))
-            			$columns .= ',';
+            	/*if (isset($columns))
+            		$columns .= ',';
+               	$columns .= $key;
+          		
+            	if (isset($values))
+            		$values .= ',';
+          		$values .= ':'.$key;*/
+
+          		if (isset($columns))
+            		$columns .= ',';
                	$columns .= '`'.$key.'`';
           		
             	if (isset($values))
@@ -118,13 +138,28 @@
           		$values .= '"'.addslashes($item).'"';
         	
         	}  
+ 	 
 
       	}
 
+      	//$query = 'INSERT INTO `'.$table.'` ('.$columns.') VALUES('.$values.');';
+
       	$query = 'INSERT INTO `'.$table.'` ('.$columns.') VALUES('.$values.');';
+
+      	//$result = db_query($query, $items, $conf);
+
+      	$result = db_query($query, null, $conf);
+
+      	//if ($result == 0)
+      	//	echo "$query \n";
+
+
 		
-		return db_query($query);
+		return $result;
 	}
+
+
+		
 
 
 		
