@@ -101,12 +101,14 @@
 	*/
 	function db_get($query, $conf = '') {
 	
-		$result = db_query($query, null, $conf);
+		$items = db_query($query, null, $conf);
 
-		if (sizeof($result) == 1)
-			return $result[0];
+		if (sizeof($items) == 1 and strripos($query, 'LIMIT 1') !== FALSE)
+			$result =  $items[0];
 		else
-			return $result;
+			$result = $items;
+		
+		return $result;
 		
 	}
 
