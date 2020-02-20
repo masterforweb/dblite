@@ -89,7 +89,7 @@
         		return $conn->lastInsertId();
     		}
         	else
-        		return $result->fetchAll();
+        		return $result->fetchAll(PDO::FETCH_ASSOC);
         }	
 
 	}	
