@@ -53,9 +53,9 @@
 			//$mysql->query('SET NAMES UTF8');
 
 			$mysql->query("SET NAMES 'utf8'");
+			$connects[$name] = $mysql;
+			
 			return $mysql;
-
-			//return $connects[$name] = $mysql;
 
 		}	
 		
