@@ -1,9 +1,38 @@
 <?php
 
+	
+	/** dbl section 
+	*/
+
+	
+	
+	
+	
+	
+	/** возвращатель результатов
+	*/
+	function dbl_get($query, $conf = '') {
+	
+		$items = db_query($query, null, $conf);
+
+		if (sizeof($items) == 1 and strripos($query, 'LIMIT 1') !== FALSE)
+			$result =  $items[0];
+		else
+			$result = $items;
+		
+		return $result;
+		
+	}
+	
+
+
+
+
+
 	/**
 	* хранитель конфигураций
 	*/
-	function db_config($name = '', $connect = '', $user = 'root', $pwd = '') {
+	function dbl_config($name = '', $connect = '', $user = 'root', $pwd = '') {
 		
 		static $config = array();
 
@@ -30,6 +59,13 @@
 
 	}	
 
+
+	
+
+	function db_config($name = '', $connect = '', $user = 'root', $pwd = ''){
+		return dbl_config($name, $connect, $user, $pwd);
+	}	
+		
 
 	/**
 	* хранитель коннектов
@@ -101,17 +137,14 @@
 	*/
 	function db_get($query, $conf = '') {
 	
-		$items = db_query($query, null, $conf);
-
-		if (sizeof($items) == 1 and strripos($query, 'LIMIT 1') !== FALSE)
-			$result =  $items[0];
-		else
-			$result = $items;
-		
-		return $result;
+		return dbl_get($query, $conf);
 		
 	}
 
+	
+
+
+	
 
 
 
