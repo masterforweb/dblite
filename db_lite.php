@@ -5,9 +5,7 @@
 	*/
 
 	
-	
-	
-	
+
 	
 	/** возвращатель результатов
 	*/
@@ -140,6 +138,86 @@
 		return dbl_get($query, $conf);
 		
 	}
+
+	/**
+	 * array to update
+	 */
+	function dbl_update($table, $items = array(), $primaryKey = 'id', $primaryKeyValue = 0, $conf = '') {
+
+		$result = false;
+		$setValues = '';
+
+		foreach ($items as $key => $value) {
+			if ($key !== $primaryKey) {
+    			$setValues .= "$key = :$key, ";
+			}	
+		}
+		
+		$setValues = rtrim($setValues, ', '); // Удаляем последнюю запятую и пробел
+
+		$query = "UPDATE $table SET $setValues WHERE $primaryKey = :primaryKeyValue";
+		
+		try {
+			$pdo = db_conn($conf);
+			$stmt = $pdo->prepare($query);
+		
+			foreach ($items as $key => $value) {
+				if ($key !== $primaryKey) {
+					$stmt->bindValue(':' . $key, $value);
+					echo ':' . $key.' = '.$value."<br>";
+				}	
+			}
+			$stmt->bindValue(':primaryKeyValue', $primaryKeyValue);
+			
+			if ($stmt->execute() === false) {
+				$errorInfo = $stmt->errorInfo();
+				$result['error'] = "Error: {$errorInfo[2]}";
+			} else {
+				$result = true;
+			}
+
+		} catch (PDOException $e) {
+			$result['error'] =  $e->getMessage();
+		}
+
+		return $result;
+
+
+	}
+
+
+	function dbl_insert($table, $items = array(), $conf = '') {
+
+		$result = '';
+		
+		$columns = implode(', ', array_keys($items));
+		$placeholders = ':' . implode(', :', array_keys($items));
+
+		$query = "INSERT INTO $table ($columns) VALUES ($placeholders)";
+
+		try {
+			$pdo = db_conn($conf);
+			$stmt = $pdo->prepare($query);
+		
+			foreach ($items as $key => $value) {
+				$stmt->bindValue(':' . $key, $value);
+			}
+			
+			$result = $stmt->execute();
+
+			if ($result !== false){
+				$result = $pdo->lastInsertId();
+			} else {
+				$result = false;
+			}
+					
+		} catch (PDOException $e) {
+			$result['error'] = $e->getMessage();
+		}
+
+		return $result;
+	
+	}	
 
 	
 
